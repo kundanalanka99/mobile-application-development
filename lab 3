@@ -1,0 +1,139 @@
+//3 a) Develop an android application to demonstrate the Implicit and Explicit Intent.
+//3 b) Develop an android application to demonstrate Intent Filters
+
+3 a)
+
+//MainAcitivity.java
+
+package com.example.sharemyapp;
+
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.Button;
+import android.content.Intent;
+
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+  Button b;
+  EditText e;
+  
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+    b=(Button)findViewById(R.id.button);
+    e=(EditText)findViewById(R.id.editText);
+    b.setOnClickListener(this);
+  }
+  
+  @Override
+  public void onClick(View v) {
+    if(v.getId()==R.id.button) {
+      String result=e.getText().toString();
+      Intent shareIntent=new Intent();
+      shareIntent.setAction(Intent.ACTION_SEND);
+      shareIntent.putExtra(Intent.EXTRA_TEXT,result);
+      shareIntent.setType("text/plain");
+      startActivity(shareIntent.createChooser(shareIntent,&quot;Share to&quot;));
+    }
+  }
+}
+
+//activity_main.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  tools:context=".MainActivity">
+  
+  <EditText
+    android:id="@+id/editText"
+    android:layout_width="297dp"
+    android:layout_height="65dp"
+    android:layout_marginStart="72dp"
+    android:layout_marginTop="168dp"
+    android:ems="10"
+    android:inputType="textPersonName"
+    android:text="Name"
+    android:textSize="30sp"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+    
+  <Button
+    android:id="@+id/button"
+    android:layout_width="158dp"
+    android:layout_height="67dp"
+    android:layout_marginStart="124dp"
+    android:layout_marginTop="296dp"
+    android:text="Share"
+    android:textSize="40sp"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+3 b)
+
+//activity_main.xml
+
+<android.support.constraint.ConstraintLayout
+tools:context=".MainActivity">
+
+  <Button
+    android:id="@+id/sendMail"
+    android:text="Send Mail"  />
+
+</android.support.constraint.ConstraintLayout>
+
+
+//MainActivity.java
+
+package com.example.prabu.intentfilters;
+
+import…..
+public class MainActivity extends AppCompatActivity {
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+    Button btnSend = (Button)findViewById(R.id.sendMail);
+    btnSend.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("message/rfc822");
+        intent.putExtra(Intent.EXTRA_EMAIL,new String[]{"newsletter@vrsec.ac..in"});
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Newsletter");
+        intent.putExtra(Intent.EXTRA_TEXT, "Sir, I have read this month's newsletter of VRSEC. I
+        would like to subscribe to the newsletter");
+        startActivity(Intent.createChooser(intent,"Choose Mail App"));
+      }
+    });
+  }
+}
+
+
+//AndroidManifest.xml
+
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  package="com.example.prabu.intentfilters">
+  <application
+    <activity android:name=".MainActivity">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+        <action android:name="android.intent.action.SEND"/>
+        <category android:name="android.intent.category.DEFAULT"/>
+        <data android:mimeType="message/rfc822"/>
+      </intent-filter>
+    </activity>
+  </application>
+</manifest>
