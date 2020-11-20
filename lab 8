@@ -1,0 +1,161 @@
+//8 a) Android Progress Notification
+//8 b) Android Push Notification
+
+
+8 a)
+
+
+activity_main.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+ xmlns:app="http://schemas.android.com/apk/res-auto"
+ xmlns:tools="http://schemas.android.com/tools"
+ android:layout_width="match_parent"
+ android:layout_height="match_parent"
+ tools:context=".MainActivity">
+ <Button
+   android:layout_width="wrap_content"
+   android:layout_height="wrap_content"
+   android:text="Show Notification"
+   android:id="@+id/b"
+   app:layout_constraintBottom_toBottomOf="parent"
+   app:layout_constraintEnd_toEndOf="parent"
+   app:layout_constraintStart_toStartOf="parent"
+   app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+MainActivity.java
+
+package com.example.progressnotification;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
+import android.graphics.Color;
+import android.os.Build;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+public class MainActivity extends AppCompatActivity {
+ private NotificationManager mNotifyManager;
+ private NotificationCompat.Builder mbuilder;
+ int id=1;
+ @Override
+ protected void onCreate(Bundle savedInstanceState) {
+ super.onCreate(savedInstanceState);
+ setContentView(R.layout.activity_main);
+ Button b1=(Button)findViewById(R.id.b);
+ b1.setOnClickListener(new View.OnClickListener() {
+ @Override
+ public void onClick(View v) {
+
+mNotifyManager=(NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+ NotificationChannel notificationChannel = new NotificationChannel("my_channel_id_01", "My Notifications",
+NotificationManager.IMPORTANCE_LOW);
+ notificationChannel.setSound(null,null);
+ mNotifyManager.createNotificationChannel(notificationChannel);
+ mbuilder=new NotificationCompat.Builder(MainActivity.this,"my_channel_id_01");
+ mbuilder.setSound(null);
+ mbuilder.setContentTitle("File Download");
+ mbuilder.setContentText("Download in progress..");
+ mbuilder.setSmallIcon(R.drawable.img);
+ new Thread(new Runnable() {
+ @Override
+public void run() {
+ int incr;
+for(incr=0;incr<=100;incr+=5)
+ {
+ mbuilder.setProgress(100,incr,false);
+ mNotifyManager.notify(id,mbuilder.build());
+ try{
+ Thread.sleep(1000);
+ }
+catch(InterruptedException e)
+{
+ Log.d("TAG","sleep failure");
+ }
+ }
+mbuilder.setContentText("Download Completed");
+ mbuilder.setProgress(0,0,false);
+ mNotifyManager.notify(id,mbuilder.build());
+ }
+ }).start();
+ }
+ });
+ }
+}
+
+
+
+
+8 b)
+
+activity_main.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+ xmlns:app="http://schemas.android.com/apk/res-auto"
+ xmlns:tools="http://schemas.android.com/tools"
+ android:layout_width="match_parent"
+ android:layout_height="match_parent"
+ tools:context=".MainActivity">
+ <Button
+   android:layout_width="wrap_content"
+   android:layout_height="wrap_content"
+   android:id="@+id/b"
+   android:layout_marginStart="8dp"
+   android:layout_marginBottom="8dp"
+   android:layout_marginTop="8dp"
+   android:layout_marginEnd="8dp"
+   android:onClick="openNotification"
+   android:text="Notification"
+   app:layout_constraintTop_toTopOf="parent"
+   app:layout_constraintStart_toStartOf="parent"
+   app:layout_constraintBottom_toBottomOf="parent"
+   app:layout_constraintEnd_toEndOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+MainActivity.java
+
+package com.example.pushnotification;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Intent;
+import android.os.Build;
+import android.os.Bundle;
+import android.view.View;
+
+public class MainActivity extends AppCompatActivity {
+@Override
+ protected void onCreate(Bundle savedInstanceState) {
+ super.onCreate(savedInstanceState);
+ setContentView(R.layout.activity_main);
+ }
+ public void openNotification(View view)
+ {
+ NotificationManager
+manager=(NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+ if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O)
+ {
+ NotificationChannel mychannel=new NotificationChannel("default","My NOtification",NotificationManager.IMPORTANCE_DEFAULT);
+ manager.createNotificationChannel(mychannel);
+ }
+ Intent intent=new Intent(this,MainActivity.class);
+ PendingIntent pd=PendingIntent.getActivity(this,1,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+ NotificationCompat.Builder notification=new NotificationCompat.Builder(this,"default");
+ notification.setContentTitle("1 New Message");
+ notification.setContentText("Good Morning");
+ notification.setSmallIcon(R.drawable.img);
+ notification.setAutoCancel(true);
+ notification.setContentIntent(pd);
+ manager.notify(1,notification.build());
+ }
+}
