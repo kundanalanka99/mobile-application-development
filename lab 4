@@ -1,0 +1,346 @@
+//4 a) Linear Layout, Relative Layout, Frame Layout, Table Layout, Constraint Layout
+//4 b) Web View, List View, Grid View
+
+4 a)
+
+//Linear layout
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  tools:context=".MainActivity">
+  <EditText
+    android:id="@+id/To"
+    android:hint="To" />
+  <EditText
+    android:id="@+id/Subject"
+    android:hint="Subject" />
+  <EditText
+    android:id="@+id/Message"
+    android:hint="Message" />
+  <Button
+    android:id="@+id/Send"
+    android:layout_gravity="right"
+    android:text="Send" />
+</LinearLayout >
+
+
+//Relative layout
+
+<RelativeLayout xmlns:android=http://schemas.android.com/apk/res/android
+  tools:context=".MainActivity">
+
+  <Button
+    android:id="@+id/btn1"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentLeft="true"
+    android:text="Button1" />
+
+  <Button
+    android:id="@+id/btn2"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentRight="true"
+    android:layout_centerVertical="true"
+    android:text="Button2" />
+
+  <Button
+    android:id="@+id/btn3"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentLeft="true"
+    android:layout_centerVertical="true"
+    android:text="Button3" />
+
+  <Button
+    android:id="@+id/btn4"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:text="Button4" />
+
+  <Button
+    android:id="@+id/btn5"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignBottom="@+id/btn2"
+    android:layout_centerHorizontal="true"
+    android:text="Button5" />
+
+  <Button
+    android:id="@+id/btn6"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_above="@+id/btn4"
+    android:layout_centerHorizontal="true"
+    android:text="Button6" />
+    
+  <Button
+    android:id="@+id/btn7"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentRight="true"
+    android:layout_toEndOf="@+id/btn1"
+    android:layout_toRightOf="@+id/btn1"
+    android:text="Button7" />
+</RelativeLayout>
+
+
+//Frame layput
+
+<FrameLayout xmlns:android=http://schemas.android.com/apk/res/android
+  android:orientation="vertical“
+  tools:context=".MainActivity">
+  
+  <ImageView
+    android:id="@+id/imgvw1"
+    android:layout_width="match_parent"
+    android:layout_height="505dp"
+    android:scaleType="fitEnd"
+    android:src="@drawable/paris" />
+    
+  <TextView
+    android:id="@+id/txtvw1"
+    android:background="#4C374A"
+    android:padding="10dp"
+    android:text="Eiffel Tower"
+    android:textColor="#FFFFFF"
+    android:textSize="20sp" />
+
+  <TextView
+    android:id="@+id/txtvw2"
+    android:layout_gravity="right|bottom"
+    android:background="#AA000000"
+    android:padding="10dp"
+    android:text="25/Aug/2018"
+    android:textColor="#FFFFFF"
+    android:textSize="18sp" />
+</FrameLayout>
+
+
+//Table layout
+
+<TableLayout xmlns:android=http://schemas.android.com/apk/res/android
+  tools:context=".MainActivity">
+
+  <TableRow
+    android:background="#0079D6"
+    android:padding="5dp">
+
+    <TextView
+      android:layout_weight="1"
+      android:text="User ID" />
+
+    <TextView
+      android:layout_weight="1"
+      android:text="User Name" />
+
+    <TextView
+      android:layout_weight="1"
+      android:text="Location" />
+  </TableRow>
+  
+  <TableRow android:background="#DAE8FC" android:padding="5dp">
+    <TextView
+      android:layout_weight="1"
+      android:text="1" />
+
+    <TextView
+      android:layout_weight="1"
+      android:text="ARU N" />
+
+    <TextView
+      android:layout_weight="1"
+      android:text="Hyderabad" />
+  </TableRow>
+  
+  <TableRow android:background="#DAE8FC" android:padding="5dp">
+    <TextView
+      android:layout_weight="1"
+      android:text="3" />
+
+    <TextView
+      android:layout_weight="1"
+      android:text="CHANDRU" />
+    
+    <TextView
+      android:layout_weight="1"
+      android:text="GUNTUR" />
+  </TableRow>
+</TableLayout>
+
+
+//Constraint layout
+
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  tools:context=".MainActivity">
+
+  <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Hello World!"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintRight_toRightOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+
+</android.support.constraint.ConstraintLayout>
+
+
+
+
+4 b)
+
+//List view
+
+activity_main.xml
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <ListView
+        android:id="@+id/userlist"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </ListView>
+</LinearLayout>
+
+MainActivity.java
+
+public class MainActivity extends AppCompatActivity
+{
+    private ListView mylist;
+    private ArrayAdapter myadapter;
+    private String[] users = { "A. Harsha Vardhan Sai", "S. Abhishek", "A Sai Manohar",       "A. Vikas Reddy", "A. Gowtham Komal", "A. Hanish Sai Vijay Kumar"};
+    @Override
+    protected void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        mylist = (ListView) findViewById(R.id.userlist);
+        myadapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, users);
+        mylist.setAdapter(myadapter);
+    }
+}
+
+//Grid view
+
+activity_main.xml
+
+<GridView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/gridview"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:columnWidth="110dp"
+    android:numColumns="auto_fit"
+    android:verticalSpacing="10dp"
+    android:horizontalSpacing="10dp"
+    android:stretchMode="columnWidth"
+    android:gravity="center">
+</GridView>
+
+MainActivity.java
+
+public class MainActivity extends AppCompatActivity
+{
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        GridView gv = (GridView) findViewById(R.id.gridview);
+        gv.setAdapter(new ImageAdapter(this));
+        gv.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+          public void onItemClick(AdapterView<?> parent, View v, int position, long id)
+          {
+               Toast.makeText(MainActivity.this, "Image Position: " + position,   Toast.LENGTH_SHORT).show();
+          }
+        });
+    }
+}
+
+ImageAdapter.java
+
+public class ImageAdapter extends BaseAdapter
+{
+    private Context mContext;
+
+    public ImageAdapter(Context c)
+    {
+        mContext = c;
+    }
+
+    public int getCount()
+    {
+        return thumbImages.length;
+    }
+        public Object getItem(int position)
+    {
+        return null;
+    }
+
+    public long getItemId(int position)
+    {
+        return 0;
+    }
+     public View getView(int position, View convertView, ViewGroup parent)
+    {
+        ImageView imageView = new ImageView(mContext);
+        imageView.setLayoutParams(new GridView.LayoutParams(200, 200));
+        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        imageView.setPadding(8, 8, 8, 8);
+        imageView.setImageResource(thumbImages[position]);
+        return imageView;
+    }
+    public Integer[] thumbImages =
+            {
+            R.drawable.img1, R.drawable.img2,
+            R.drawable.img3, R.drawable.img4,
+            R.drawable.img5, R.drawable.img6,
+            R.drawable.img7, R.drawable.img8,
+            R.drawable.img1, R.drawable.img2,
+            R.drawable.img3, R.drawable.img4,
+            R.drawable.img5, R.drawable.img6,
+            R.drawable.img7, R.drawable.img8,
+            R.drawable.img1, R.drawable.img2,
+            R.drawable.img3, R.drawable.img4,
+            R.drawable.img5
+    };
+}
+
+//Web view
+
+activity_main.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<WebView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/webview"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+</WebView>
+
+MainActivity.java
+
+public class MainActivity extends AppCompatActivity
+{
+    @Override
+    protected void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        WebView wv = (WebView) findViewById(R.id.webview);
+        String customHtml = "<html><body>" +
+                            "<h1>Welcome to WebView</h1>" +
+                            "<h2>Welcome to Webview</h2>" +
+                            "<h3>Welcome to Webview</h3>" +
+                            "<p>It's a Static Web HTML Content.</p>" +
+                            "</body></html>";
+        wv.loadData(customHtml, "text/html", "UTF-8");
+    }
+}
