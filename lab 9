@@ -1,0 +1,315 @@
+//9 a) Camera
+//9 b) Audio Player, Video Player
+
+
+9 a)
+
+activity_main.xml
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+ xmlns:app="http://schemas.android.com/apk/res-auto"
+ xmlns:tools="http://schemas.android.com/tools"
+ android:layout_width="match_parent"
+ android:layout_height="match_parent"
+ tools:context=".MainActivity">
+ <Button
+   android:id="@+id/btn"
+   android:layout_width="wrap_content"
+   android:layout_height="wrap_content"
+   android:text="Take a photo"
+   android:textStyle="bold"
+   android:layout_centerHorizontal="true"
+   android:layout_alignParentBottom="true"/>
+ <ImageView
+   android:layout_width="fill_parent"
+   android:layout_height="fill_parent"
+   android:id="@+id/capimg"
+   android:layout_above="@+id/btn"/>
+</RelativeLayout>
+
+MainActivity.java
+
+package com.example.camera;
+import androidx.appcompat.app.AppCompatActivity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.Bundle;
+import android.provider.MediaStore;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.Toast;
+public class MainActivity extends AppCompatActivity {
+ private Button btnCapture;
+ private ImageView imgCapture;
+ private static final int Image_Capture_Code = 1;
+ @Override
+ protected void onCreate(Bundle savedInstanceState) {
+ super.onCreate(savedInstanceState);
+ setContentView(R.layout.activity_main);
+ btnCapture =(Button)findViewById(R.id.btn);
+ imgCapture = (ImageView) findViewById(R.id.capimg);
+ btnCapture.setOnClickListener(new View.OnClickListener() {
+ @Override
+ public void onClick(View v) {
+ Intent cInt = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+ startActivityForResult(cInt,Image_Capture_Code);
+ }
+ });
+ }
+ @Override
+ protected void onActivityResult(int requestCode, int resultCode, Intent data)
+ {
+ if (requestCode == Image_Capture_Code) {
+ if (resultCode == RESULT_OK) {
+ Bitmap bp = (Bitmap) data.getExtras().get("data");
+ imgCapture.setImageBitmap(bp);
+ } 
+ else if (resultCode == RESULT_CANCELED) {
+ Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
+ }
+ }
+ }
+}
+
+
+
+
+
+9 b)
+
+//Audio player
+
+activity_main.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+ xmlns:app="http://schemas.android.com/apk/res-auto"
+ xmlns:tools="http://schemas.android.com/tools"
+ android:layout_width="match_parent"
+ android:layout_height="match_parent"
+ tools:context=".MainActivity">
+ <TextView
+   android:layout_width="wrap_content"
+   android:layout_height="wrap_content"
+   android:id="@+id/tv1"
+   android:text="Now Playing"
+   android:layout_marginTop="30dp"
+   android:textAppearance="?android:attr/textAppearanceMedium"/>
+ <TextView
+   android:layout_width="wrap_content"
+   android:layout_height="wrap_content"
+   android:id="@+id/sname"
+   android:layout_marginTop="50dp"
+   android:text="TextView"/>
+ <ImageView
+   android:layout_width="match_parent"
+   android:layout_height="450dp"
+   android:id="@+id/logo"
+   android:src="@drawable/land"/>
+ <ImageButton
+   android:layout_width="wrap_content"
+   android:layout_height="wrap_content"
+   android:id="@+id/back"
+   android:layout_alignParentBottom="true"
+   android:layout_marginBottom="44dp"
+   android:layout_marginLeft="20dp"
+   android:src="@android:drawable/ic_media_rew"/>
+ <ImageButton
+   android:layout_width="wrap_content"
+   android:layout_height="wrap_content"
+   android:id="@+id/play"
+   android:layout_marginTop="20dp"
+   android:layout_alignTop="@+id/back"
+   android:layout_toRightOf="@+id/back"
+   android:src="@android:drawable/ic_media_play"/>
+ <ImageButton
+   android:layout_width="wrap_content"
+   android:layout_height="wrap_content"
+   android:id="@+id/pause"
+   android:layout_alignTop="@+id/play"
+   android:layout_marginLeft="20dp"
+   android:layout_toRightOf="@+id/play"
+   android:src="@android:drawable/ic_media_pause"/>
+ <ImageButton
+   android:layout_width="wrap_content"
+   android:layout_height="wrap_content"
+   android:id="@+id/forward"
+   android:layout_alignTop="@+id/pause"
+   android:layout_marginLeft="20dp"
+   android:layout_toRightOf="@+id/pause"
+   android:contentDescription="@+id/imageButton3"
+   android:src="@android:drawable/ic_media_ff"/>
+ <TextView
+   android:layout_width="wrap_content"
+   android:layout_height="wrap_content"
+   android:id="@+id/starttime"
+   android:layout_alignTop="@+id/sbar"
+   android:text="0 MIN,0 sec"/>
+ <SeekBar
+   android:layout_width="match_parent"
+   android:layout_height="wrap_content"
+   android:id="@+id/sbar"
+   android:layout_above="@+id/back"
+   android:layout_toLeftOf="@+id/songtime"
+   android:layout_toRightOf="@+id/starttime"/>
+ <TextView
+   android:layout_width="wrap_content"
+   android:layout_height="wrap_content"
+   android:id="@+id/songtime"
+   android:layout_toRightOf="@+id/forward"
+   android:layout_alignTop="@+id/sbar"
+   android:text="0 min,o sec"/>
+</RelativeLayout>
+
+
+MainActivity.java
+
+package com.example.audioplayer;
+import androidx.appcompat.app.AppCompatActivity;
+import android.media.MediaPlayer;
+import android.os.Bundle;
+import android.os.Handler;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.SeekBar;
+import android.widget.TextView;
+import android.widget.Toast;
+import java.security.interfaces.RSAKey;
+import java.util.concurrent.TimeUnit;
+public class MainActivity extends AppCompatActivity {
+ private ImageButton forwardbtn, backwardbtn, pausebtn, playbtn;
+ private MediaPlayer mPlayer;
+ private TextView songName, startTime, songTime;
+ private SeekBar songPrgs;
+ private static int oTime =0, sTime =0, eTime =0, fTime = 5000, bTime = 5000;
+ private Handler hdlr = new Handler();
+ @Override
+ protected void onCreate(Bundle savedInstanceState) {
+ super.onCreate(savedInstanceState);
+ setContentView(R.layout.activity_main);
+ backwardbtn = (ImageButton) findViewById(R.id.back);
+ forwardbtn = (ImageButton) findViewById(R.id.forward);
+ playbtn = (ImageButton) findViewById(R.id.play);
+ pausebtn = (ImageButton) findViewById(R.id.pause);
+ songName = (TextView) findViewById(R.id.sname);
+ startTime = (TextView) findViewById(R.id.starttime);
+ songTime = (TextView) findViewById(R.id.songtime);
+ songName.setText("Undipova song");
+ mPlayer=MediaPlayer.create(MainActivity.this,R.raw.undipova);
+ songPrgs = (SeekBar) findViewById(R.id.sbar);
+ songPrgs.setClickable(false);
+ pausebtn.setEnabled(false);
+ playbtn.setOnClickListener(new View.OnClickListener() {
+ @Override
+ public void onClick(View v) {
+ Toast.makeText(MainActivity.this, "Playing Audio", Toast.LENGTH_SHORT).show();
+ mPlayer.start();
+ eTime = mPlayer.getDuration();
+ sTime = mPlayer.getCurrentPosition();
+ if (oTime == 0) {
+ songPrgs.setMax(eTime);
+ oTime = 1;
+ }
+ songTime.setText(String.format("%d min, %d sec", TimeUnit.MILLISECONDS.toMinutes(eTime), TimeUnit.MILLISECONDS.toSeconds(eTime) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(eTime))));
+ startTime.setText(String.format("%d min, %d sec", TimeUnit.MILLISECONDS.toMinutes(sTime), TimeUnit.MILLISECONDS.toSeconds(sTime) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(sTime))));
+ songPrgs.setProgress(sTime);
+ hdlr.postDelayed(UpdateSongTime, 100);
+ pausebtn.setEnabled(true);
+ playbtn.setEnabled(false);
+ }
+ });
+ pausebtn.setOnClickListener(new View.OnClickListener() {
+ @Override
+ public void onClick(View v) {
+ mPlayer.pause();
+ pausebtn.setEnabled(false);
+ playbtn.setEnabled(true);
+ Toast.makeText(getApplicationContext(), "Pausing Audio", Toast.LENGTH_SHORT).show();
+ }
+ });
+ forwardbtn.setOnClickListener(new View.OnClickListener() {
+ @Override
+ public void onClick(View v) {
+ if ((sTime + fTime) <= eTime) {
+ sTime = sTime + fTime;
+ mPlayer.seekTo(sTime);
+ } else {
+ Toast.makeText(getApplicationContext(), "Cannot jump forward 5 seconds", Toast.LENGTH_SHORT).show();
+ }
+ if (!playbtn.isEnabled()) {
+ playbtn.setEnabled(true);
+ }
+ }
+ });
+ backwardbtn.setOnClickListener(new View.OnClickListener() {
+ @Override
+ public void onClick(View v) {
+ if ((sTime - bTime) > 0) {
+ sTime = sTime - bTime;
+ mPlayer.seekTo(sTime);
+ } else {
+ Toast.makeText(getApplicationContext(), "Cannot jump backward 5 seconds", Toast.LENGTH_SHORT).show();
+ }
+ if (!playbtn.isEnabled()) {
+ playbtn.setEnabled(true);
+ }
+ }
+ });
+ }
+ private Runnable UpdateSongTime = new Runnable() {
+ @Override
+ public void run() {
+ sTime = mPlayer.getCurrentPosition();
+ startTime.setText(String.format("%d min, %d sec", TimeUnit.MILLISECONDS.toMinutes(sTime), TimeUnit.MILLISECONDS.toSeconds(sTime) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(sTime))));
+ songPrgs.setProgress(sTime);
+ hdlr.postDelayed(this, 100);
+ }
+ };
+}
+
+
+//Video player
+
+
+activity_main.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+ xmlns:app="http://schemas.android.com/apk/res-auto"
+ xmlns:tools="http://schemas.android.com/tools"
+ android:layout_width="match_parent"
+ android:layout_height="match_parent"
+ tools:context=".MainActivity">
+ <VideoView
+   android:id="@+id/video"
+   android:layout_width="match_parent"
+   android:layout_height="match_parent"
+   android:layout_gravity="center"/>
+</RelativeLayout>
+
+MainActivity.java
+
+package com.example.videoplayer;
+import androidx.appcompat.app.AppCompatActivity;
+import android.net.Uri;
+import android.os.Bundle;
+import android.widget.MediaController;
+import android.widget.VideoView;
+
+public class MainActivity extends AppCompatActivity {
+ @Override
+ protected void onCreate(Bundle savedInstanceState) {
+ super.onCreate(savedInstanceState);
+  setContentView(R.layout.activity_main);
+ VideoView videoView =(VideoView)findViewById(R.id.video);
+ MediaController mediaController= new MediaController(this);
+ mediaController.setAnchorView(videoView);
+ Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video);
+ //Starting VideView By Setting MediaController and URI
+ videoView.setMediaController(mediaController);
+ videoView.setVideoURI(uri);
+ videoView.requestFocus();
+ videoView.start();
+ }
+}
