@@ -1,0 +1,63 @@
+Lab 1 
+a) Installation of Android Studio
+b) Android Virtual Device Creation
+
+
+Lab 2
+a) Implement Hello World Program
+b) Develop an android application to demonstrateActivity life cycle.
+
+
+Lab 3
+a) Develop an android application to demonstrate the Implicit and Explicit Intent.
+b) Develop an android application to demonstrate Intent Filters
+
+
+Lab 4
+User Interface (UI) Layouts
+a) Linear Layout, Relative Layout, Frame Layout, Table Layout, Constraint Layout
+b) Web View, List View, Grid View
+
+
+Lab 5
+User Interface (UI) or Input Controls
+a) TextView, EditText, Button, Toggle Button, CheckBox, Radiobutton, Spinner
+b) DatePicker, TimePicker, SeekBar, RatingBar, TextClock, Switch
+
+
+Lab 6
+Menus
+a) Options Menu,
+b) Context Menu, Popup Menu
+
+
+Lab 7
+Android Notifications
+a) Android Notifications (BigTextStyle,
+BigPictureStyle, InboxStyle)
+b) Android Custom Toast
+
+
+Lab 8
+Android Notifications
+a) Android Progress Notification
+b) Android Push Notification
+
+
+Lab 9
+Multimedia Components
+a) Camera
+b) Audio Player, Video Player
+
+
+Lab 10
+Develop an android application to implement login and registration screens.
+
+
+Lab 11
+Develop an android application to implement Android Tabs Layout.
+
+
+Lab 12
+Develop an android application using SQLite to perform CRUD Operations.
+
