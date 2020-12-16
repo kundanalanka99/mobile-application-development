@@ -1,7 +1,7 @@
 //12 Develop an android application using SQLite to perform CRUD Operations.
 
 
-activity_main.xml
+//activity_main.xml
 
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
@@ -99,6 +99,7 @@ xmlns:android="http://schemas.android.com/apk/res/android"
    app:layout_constraintStart_toEndOf="@+id/delete"
    app:layout_constraintTop_toBottomOf="@+id/add" />
 </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 
 //MainActivity.java
@@ -203,6 +204,7 @@ showMessage("Student Data", buffer.toString());
 }
 
 
+
 //DatabaseHelper.java
 
 package com.example.sqliteapp;
@@ -261,3 +263,4 @@ public class DatabaseHelper extends SQLiteOpenHelper {
  return db.delete(TABLE_NAME, "ID = ?",new String[] {id});
  }
 }
+
